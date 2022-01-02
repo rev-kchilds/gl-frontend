@@ -1,0 +1,17 @@
+<div class="container">
+
+    <!-- create item -->
+    <form id="create-item-form" (submit)="createItem()">
+        <input class="item-name" type="text" [(ngModel)]="itemInput" name="item-name"/>
+        <button class="btn btn-primary">Add</button>
+    </form>
+
+
+    <div *ngFor="let item of items" class="grocery-item" [id]="item.id" (click)="toggleCart($event)">
+        <h4 *ngIf="!item.inCart" class="item-name">{{item.name}}</h4>
+        <h4 *ngIf="item.inCart" class="item-name in-cart">{{item.name}}</h4>
+        <button class="btn btn-danger" (click)="deleteItem($event)">Delete</button>
+    </div>
+
+    <button *ngIf="!isCartEmpty" class="btn btn-outline-danger block" (click)="deleteAllInCartItems()">Delete all in cart</button>
+</div>

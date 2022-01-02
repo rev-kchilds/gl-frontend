@@ -1,0 +1,34 @@
+#create-item-form{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#create-item-form input{
+    border-radius: 4px;
+    width: 80%;
+}
+
+#create-item-form button{
+    margin-left: 5px;
+    width: 20%;
+}
+
+.grocery-item{
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(182, 182, 182);
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.in-cart{
+    text-decoration: line-through;
+}
+
+.block{
+    margin-top: 10px;
+    width: 100%;
+}
