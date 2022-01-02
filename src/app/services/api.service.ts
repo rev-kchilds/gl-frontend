@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Action } from 'rxjs/internal/scheduler/Action';
+import { environment } from 'src/environments/environment';
 import { Account } from '../models/Account';
 import { Item } from '../models/Item';
 
@@ -10,7 +11,7 @@ import { Item } from '../models/Item';
 export class ApiService {
 
   isLoggedIn: boolean = false;
-  domain: string = "http://localhost:9000"
+  domain: string = environment.serverDomain;
 
   constructor(private httpCli: HttpClient) { }
 
