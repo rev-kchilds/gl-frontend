@@ -1,5 +1,6 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Account } from 'src/app/models/Account';
 import { Item } from 'src/app/models/Item';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -10,6 +11,7 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class DashboardComponent implements OnInit, DoCheck {
 
+  account: Account = {} as Account;
   isCartEmpty: boolean = true; 
   itemInput: string = "";
   items: Array<Item> = [];
@@ -18,13 +20,13 @@ export class DashboardComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     this.apiServ.checkSession().subscribe(responseBody => {
-      console.log(responseBody)
       this.apiServ.isLoggedIn = responseBody.data;
       
       if(!responseBody.data){
         this.router.navigate(["/"]);
       }
 
+      this.account = responseBody.data;
       this.getAllItems();
     })
 
@@ -40,7 +42,7 @@ export class DashboardComponent implements OnInit, DoCheck {
   }
 
   getAllItems(){
-    this.apiServ.getAllItems(1).subscribe(responseBody => {
+    this.apiServ.getAllItems(this.account.id).subscribe(responseBody => {
       console.log(responseBody);
       this.items = responseBody.data;
       this.items.sort((a,b) => a.id - b.id) 
@@ -48,7 +50,7 @@ export class DashboardComponent implements OnInit, DoCheck {
   }
 
   createItem(){
-    this.apiServ.createItem(1, this.itemInput).subscribe(responseBody => {
+    this.apiServ.createItem(this.account.id, this.itemInput).subscribe(responseBody => {
       console.log(responseBody);
       let item: Item = responseBody.data;
       this.items.push(item);
@@ -57,7 +59,7 @@ export class DashboardComponent implements OnInit, DoCheck {
 
   toggleCart(event: any){
     console.log(event.target.id)
-    this.apiServ.toggleInCart(1, event.target.id).subscribe(responseBody => {
+    this.apiServ.toggleInCart(this.account.id, event.target.id).subscribe(responseBody => {
       console.log(responseBody)
       this.items.forEach(element => {
         if(element.id == event.target.id)
@@ -69,7 +71,7 @@ export class DashboardComponent implements OnInit, DoCheck {
   deleteItem(event: any){
     event.stopPropagation();
     console.log(event.target.parentElement.id);
-    this.apiServ.deleteOneItem(1,event.target.parentElement.id).subscribe(responseBody => {
+    this.apiServ.deleteOneItem(this.account.id,event.target.parentElement.id).subscribe(responseBody => {
       console.log(responseBody);
       let index = 0;
       this.items.forEach((element, i) => {
@@ -81,7 +83,7 @@ export class DashboardComponent implements OnInit, DoCheck {
   }
 
   deleteAllInCartItems(){
-    this.apiServ.deleteAllInCartItems(1).subscribe(responseBody => {
+    this.apiServ.deleteAllInCartItems(this.account.id).subscribe(responseBody => {
       this.getAllItems();
     })
   }
